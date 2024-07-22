@@ -19,7 +19,7 @@ class Server {
         try {
             await Database.connection()
         } catch (error: any) {
-            throw new Error(error)
+            console.log(error)
         }
     }
 
