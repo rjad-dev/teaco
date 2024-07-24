@@ -26,6 +26,7 @@ class Server {
     public start() {
         this.connect()
         this.app.listen(port, () => {
+            console.log("Hello")
             console.info(`Server started at ${baseUrl}:${port}`);
         })
     }
