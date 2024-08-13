@@ -41,7 +41,7 @@ const ComingSoon: React.FC = () => {
 
   useEffect(() => {
     // Set the target date to 30 days from now
-    const targetDate = new Date();
+    const targetDate = new Date('2024-08-13T15:16:48.160Z');
     targetDate.setDate(targetDate.getDate() + 30);
 
     const interval = setInterval(() => {
