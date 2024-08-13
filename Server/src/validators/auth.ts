@@ -9,7 +9,7 @@ const signUp = Joi.object({
 
 const verifyAccount = Joi.object({
   email: joiSchema.emailSchema.required().label("E-mail"),
-  verificationCode: joiSchema.numberSchema
+  verificationCode: joiSchema.stringSchame
     .required()
     .label("Verification code"),
 });

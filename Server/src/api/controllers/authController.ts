@@ -2,7 +2,7 @@ import crypto from "crypto";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
-import { InputUserInterface } from "../../interfaces";
+import { InputUserInterface, UserInterface } from "../../interfaces";
 import { UsersService } from "../../services";
 import { saltRound } from "../../config";
 import { Authenticate, Validator } from "../../middlewares";
@@ -16,6 +16,15 @@ export class AuthController {
   static async signUp(req: Request, res: Response): Promise<Response> {
     const { name, email, password } = req.body as InputUserInterface;
     Validator.check(signUp, { name, email, password });
+    const userExists = await new UsersService().findOne({email: email})
+    if (userExists) {
+      return res.status(409).json({
+        error: {
+          message: "User already exists.",
+          code: "CONFLICT"
+        }
+      });
+    }
     const verificationCode = crypto.randomInt(10000, 99999);
 
     await new UsersService().create({
@@ -113,7 +122,6 @@ export class AuthController {
     if (!matchPassword) throw new Error("Invalid password.");
 
     const accessToken = await Authenticate.generateAcessToken(userExists);
-    console.log(accessToken);
     return res.status(200).json({
       message: "Login successfull.",
       token: {
@@ -121,10 +129,10 @@ export class AuthController {
       },
     });
   }
-  static async test(req: Request, res: Response): Promise<Response> {
-    Authenticate.verifyAccessToken(req.headers.authorization)
+  static async home(req: Request, res: Response): Promise<Response> {
+    const user = (await Authenticate.verifyAccessToken(req.headers.authorization)).data as UserInterface;
     return res.status(200).json({
-        message: "Test successfull"
+        message: `Hello,  ${user.name}`,
     })
   }
 }

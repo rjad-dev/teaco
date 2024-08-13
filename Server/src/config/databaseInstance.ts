@@ -52,7 +52,7 @@ class Database {
   async connection(): Promise<void> {
     try {
       await this.sequelize.authenticate();
-      console.log(`${this.dialect} connected`);
+      console.info(`${this.dialect} connected`);
     } catch (error: any) {
       console.error(`Database connection failed`);
       throw new Error(error.message);

@@ -20,7 +20,7 @@ class Authenticate {
     };
 
     return jwt.sign(
-      { id: payload.id, email: payload.email },
+      { id: payload.id, email: payload.email, name: payload.name },
       jwtClientSecret,
       options
     );
@@ -29,7 +29,6 @@ class Authenticate {
   public async verifyAccessToken(token) {
     try {
       const decoded = jwt.verify(token, jwtClientSecret);
-      console.log(decoded);
       return { success: true, data: decoded };
     } catch (error) {
       console.error(`${error.name}`)

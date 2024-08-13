@@ -2,6 +2,11 @@ import express from "express"
 import { Database, baseUrl, port } from "./config";
 import morgan from "morgan"
 import { ProxyRouter } from "./api/routes";
+import cors from "cors"
+
+let corsOptions = {
+    origin : ['http://localhost:5173'],
+ }
 class Server {
     private app: express.Application
     constructor() {
@@ -10,6 +15,7 @@ class Server {
     }
 
     private configuration(){
+        this.app.use(cors(corsOptions))
         this.app.use(express.json());
         this.app.use(morgan("dev"));
         this.app.use('/teaco/api/v1', ProxyRouter.map())
